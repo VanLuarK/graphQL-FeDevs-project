@@ -23,6 +23,7 @@ const typeDefs = gql`
   }
 `;
 
+
 const resolvers = {
   Query: {
     getNews: async (root, args) => {
