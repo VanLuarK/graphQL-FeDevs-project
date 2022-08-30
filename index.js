@@ -1,39 +1,6 @@
-import { gql, ApolloServer } from "apollo-server";
-import axios from "axios";
-
-const typeDefs = gql`
-  type Article {
-    source: Source!
-    author: String
-    title: String!
-    description: String!
-    url: String!
-    urlToImage: String!
-    publishedAt: String!
-    content: String!
-  }
-
-  type Source {
-    id: String
-    name: String!
-  }
-
-  type Query {
-    getNews(topic: String!, date: String!, language: String!): [Article]!
-  }
-`;
-
-
-const resolvers = {
-  Query: {
-    getNews: async (root, args) => {
-      const { data } = await axios.get(
-        `https://newsapi.org/v2/everything?q=${args.topic}&from=${args.date}&sortBy=publishedAt&language=${args.language}&apiKey=43c6c8478e6e45cb85229870acb08904`
-      );
-      return data.articles.filter((article) => article.urlToImage);
-    },
-  },
-};
+import { ApolloServer } from "apollo-server";
+import { typeDefs } from "./typeDefs.js";
+import { resolvers } from "./resolvers.js";
 
 const server = new ApolloServer({
   typeDefs,
